@@ -1,0 +1,274 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Rest con Typescript",
+    "description": "API Rest con Typescript",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3002",
+  "basePath": "/v1",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "definitions": {
+    "car": {
+      "type":"object",
+      "properties": {
+        "_id": {
+          "type":"string",
+          "example": "6317a201614bc291f10d7721"
+        },
+        "color": {
+          "type": "string",
+          "example": "Rojo"
+        },
+        "gas": {
+          "type": "string",
+          "enum": ["gasoline", "electric"],
+          "example": "gasoline"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int64",
+          "example": 2023
+        },
+        "description": {
+          "type": "string",
+          "example": "Lorem"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64",
+          "example": 799900
+        },
+        "name": {
+          "type": "string",
+          "example": "Acura Integra"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-09-06T19:39:45.271Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-09-06T19:39:45.271Z"
+        }
+      }
+    },
+    "car-payload": {
+      "type":"object",
+      "required": [
+        "color",
+        "gas",
+        "year",
+        "description",
+        "price",
+        "name"
+      ],
+      "properties": {
+        "color": {
+          "type": "string",
+          "example": "Rojo"
+        },
+        "gas": {
+          "type": "string",
+          "enum": ["gasoline", "electric"],
+          "example": "gasoline"
+        },
+        "year": {
+          "type": "integer",
+          "format": "int64",
+          "example": 2023
+        },
+        "description": {
+          "type": "string",
+          "example": "Lorem"
+        },
+        "price": {
+          "type": "integer",
+          "format": "int64",
+          "example": 799900
+        },
+        "name": {
+          "type": "string",
+          "example": "Acura Integra"
+        }
+      }
+    },
+    "cars": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/car"
+      }
+    },
+    "delete": {
+      "type": "object",
+      "properties": {
+        "acknowledged": {
+          "type": "boolean",
+          "example":true
+
+        },
+        "deletedCount": {
+          "type": "integer",
+          "example":0
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "example": "ERROR_METHOD"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/items": {
+      "get": {
+        "summary": "Get all cars",
+        "operationId": "showAllCars",
+        "tags": ["Cars"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/cars"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }            
+          }
+        }
+      },
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create new car",
+        "operationId": "createCar",
+        "parameters": [
+          {
+            "name": "car",
+            "in": "body",
+            "schema":{
+              "$ref": "#/definitions/car-payload"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "CREATED",
+            "schema":{
+              "$ref": "#/definitions/car"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/items/{id}": {
+      "get": {
+        "summary": "Get car by ID",
+        "operationId": "showCarById",
+        "tags": ["Cars"],
+        "parameters": [{
+          "name": "id",
+          "in":"path",
+          "required":true,
+          "description": "ID of the car",
+          "type":"string"
+        }],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/car"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cars"],
+        "summary": "Update car",
+        "operationId": "updateCar",
+        "parameters": [
+          {
+            "name": "id",
+            "in":"path",
+            "required":true,
+            "description": "ID of the car",
+            "type":"string"
+          },
+          {
+            "name": "car",
+            "in": "body",
+            "schema":{
+              "$ref": "#/definitions/car-payload"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "UPDATED",
+            "schema":{
+              "$ref": "#/definitions/car"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cars"],
+        "summary": "Delete car",
+        "operationId": "deleteCar",
+        "parameters": [
+          {
+            "name": "id",
+            "in":"path",
+            "required":true,
+            "description": "ID of the car",
+            "type":"string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DELETE",
+            "schema":{
+              "$ref": "#/definitions/delete"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

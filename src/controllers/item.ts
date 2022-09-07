@@ -10,7 +10,7 @@ const getItem = async ({ params }: Request, res: Response) => {
     res.send(data);
 
   } catch (e) {
-    handleHttp(res, 'ERROR_GET_ITEMS');
+    handleHttp(res, 'ERROR_GET_ITEM', e);
   }
 }
 
@@ -19,7 +19,7 @@ const getItems = async (req: Request, res: Response) => {
     const response = await getCars();
     res.send(response);
   } catch (e) {
-    handleHttp(res, 'ERROR_GET_ITEM');
+    handleHttp(res, 'ERROR_GET_ITEMS', e);
   }
 }
 
@@ -30,14 +30,14 @@ const updateItem = async ({ params, body }: Request, res: Response) => {
     res.send(response);
 
   } catch (e) {
-    handleHttp(res, 'ERROR_UPDATE_ITEM');
+    handleHttp(res, 'ERROR_UPDATE_ITEM', e);
   }
 }
 
 const postItem = async ({ body }: Request, res: Response) => {
   try {
     const response = await insertCar(body);
-    res.send(response);
+    res.status(201).send(response);
 
   } catch (e) {
     handleHttp(res, 'ERROR_POST_ITEM', e);
@@ -51,7 +51,7 @@ const deleteItem = async ({ params }: Request, res: Response) => {
     res.send(response);
 
   } catch (e) {
-    handleHttp(res, 'ERROR_DELETE_ITEM');
+    handleHttp(res, 'ERROR_DELETE_ITEM', e);
   }
 }
 
