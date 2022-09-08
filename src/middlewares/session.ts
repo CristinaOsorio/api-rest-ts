@@ -12,7 +12,7 @@ const checkJwtMiddleware = (req: RequestExt, res: Response, next: NextFunction) 
 
     if (!isUser) {
       res.status(401);
-      res.send('JWT_INVALID');
+      res.send({ error: 'JWT_INVALID' });
     }
 
     req.user = isUser;
@@ -20,7 +20,7 @@ const checkJwtMiddleware = (req: RequestExt, res: Response, next: NextFunction) 
 
   } catch (e) {
     res.status(400);
-    res.send("SESSION_INVALID");
+    res.send({ error: "SESSION_INVALID" });
   }
 
 }

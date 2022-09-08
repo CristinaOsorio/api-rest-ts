@@ -24,8 +24,5 @@ readdirSync(PATH_ROUTER).filter((fileName) => {
   }
 });
 
-router.use('/', (req, res) => {
-  res.redirect('/api-doc');
-});
 
 export { router }

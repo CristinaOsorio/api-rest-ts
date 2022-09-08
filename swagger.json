@@ -15,6 +15,83 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "definitions": {
+    "login": {
+      "type":"object",
+      "properties": {
+        "user": {
+          "$ref":"#/definitions/user"
+        },
+        "token": {
+          "type":"string"
+        }
+      }
+    },
+    "login-payload": {
+      "type":"object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "cristina@test.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1223456"
+        }
+      }
+    },
+    "user": {
+      "type":"object",
+      "properties": {
+        "_id": {
+          "type":"string",
+          "example": "6317a201614bc291f10d7721"
+        },
+        "name": {
+          "type": "string",
+          "example": "Cristina Osorio"
+        },
+        "description": {
+          "type": "string",
+          "example": "Usuario destacado"
+        },
+        "email": {
+          "type": "string",
+          "example": "cristina@test.com"
+        },
+        "password": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "2022-09-06T19:39:45.271Z"
+        },
+        "updatedAt": {
+          "type": "string",
+          "example": "2022-09-06T19:39:45.271Z"
+        }
+      }
+    },
+    "user-payload": {
+      "type":"object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Cristina Osorio"
+        },
+        "description": {
+          "type": "string",
+          "example": "Usuario destacado"
+        },
+        "email": {
+          "type": "string",
+          "example": "cristina@test.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "1223456"
+        }
+      }
+    },
     "car": {
       "type":"object",
       "properties": {
@@ -130,6 +207,66 @@
     }
   },
   "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login of user",
+        "operationId": "login",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "schema":{
+              "$ref": "#/definitions/login-payload"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "LOGIN",
+            "schema":{
+              "$ref": "#/definitions/user"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register of user",
+        "operationId": "register",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "schema":{
+              "$ref": "#/definitions/user-payload"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "REGISTER",
+            "schema":{
+              "$ref": "#/definitions/user"
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
     "/items": {
       "get": {
         "summary": "Get all cars",
@@ -269,6 +406,44 @@
           }
         }
       }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Access  get to route only for auth user",
+        "operationId": "getAllOrder",
+        "tags": ["Orders"],
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "JWT access token",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data" : {
+                  "type": "string",
+                  "example": "Esto solo lo pueden ver las personas con session."
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }            
+          }
+        },
+        "security": [
+          {"bearer": []}
+        ]        
+      }
     }
-  }
+  }  
 }
