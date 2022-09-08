@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "https://api-rest-ts.herokuapp.com/",
+  "host": "api-rest-ts.herokuapp.com",
   "basePath": "/v1",
   "schemes": ["https"],
   "consumes": ["application/json"],
