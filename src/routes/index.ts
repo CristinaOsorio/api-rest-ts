@@ -12,7 +12,7 @@ const cleanFileName = (fileName: string) => {
   return file;
 }
 
-router.use('/api-doc', swaggerUi.serve, swaggerUi.setup(require('./../../swagger.json')));
+router.use('/v1/documentation', swaggerUi.serve, swaggerUi.setup(require('./../../swagger.json')));
 
 readdirSync(PATH_ROUTER).filter((fileName) => {
   const cleanName = cleanFileName(fileName);
